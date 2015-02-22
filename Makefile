@@ -335,7 +335,12 @@ LD		= $(CROSS_COMPILE)ld.bfd
 else
 LD		= $(CROSS_COMPILE)ld
 endif
+ifeq ($(HOSTOS),freebsd)
+CROSS_COMPILE	= /usr/$(XDEV_ARCH)-freebsd/usr/bin/
+CC		= $(CROSS_COMPILE)cc
+else
 CC		= $(CROSS_COMPILE)gcc
+endif
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
