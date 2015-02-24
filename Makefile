@@ -336,7 +336,9 @@ else
 LD		= $(CROSS_COMPILE)ld
 endif
 ifeq ($(HOSTOS),freebsd)
+ifndef CROSS_COMPILE
 CROSS_COMPILE	= /usr/$(XDEV_ARCH)-freebsd/usr/bin/
+endif
 CC		= $(CROSS_COMPILE)cc
 LD		= $(CROSS_COMPILE)ld
 else
