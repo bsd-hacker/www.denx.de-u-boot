@@ -339,7 +339,7 @@ ifeq ($(HOSTOS),freebsd)
 ifndef CROSS_COMPILE
 CROSS_COMPILE	= /usr/$(XDEV_ARCH)-freebsd/usr/bin/
 endif
-CC		= $(CROSS_COMPILE)cc
+CC		= $(CROSS_COMPILE)cc -mllvm -arm-use-movt=0
 LD		= $(CROSS_COMPILE)ld
 else
 CC		= $(CROSS_COMPILE)gcc
