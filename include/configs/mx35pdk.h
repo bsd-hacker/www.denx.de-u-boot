@@ -19,6 +19,7 @@
 #define CONFIG_MX35
 
 #define CONFIG_DISPLAY_CPUINFO
+#define CONFIG_SYS_GENERIC_BOARD
 
 /* Set TEXT at the beginning of the NOR flash */
 #define CONFIG_SYS_TEXT_BASE	0xA0000000
@@ -145,8 +146,6 @@
 
 #define CONFIG_SYS_MEMTEST_START	0	/* memtest works on */
 #define CONFIG_SYS_MEMTEST_END		0x10000
-
-#undef	CONFIG_SYS_CLKS_IN_HZ	/* everything, incl board info, in Hz */
 
 #define CONFIG_SYS_LOAD_ADDR		CONFIG_LOADADDR
 
