@@ -1,7 +1,7 @@
 VERSION = 2015
 PATCHLEVEL = 04
 SUBLEVEL =
-EXTRAVERSION = -rc5
+EXTRAVERSION =
 NAME =
 
 # *DOCUMENTATION*
@@ -659,8 +659,10 @@ libs-y += drivers/spi/
 libs-$(CONFIG_FMAN_ENET) += drivers/net/fm/
 libs-$(CONFIG_SYS_FSL_DDR) += drivers/ddr/fsl/
 libs-y += drivers/serial/
+libs-y += drivers/usb/dwc3/
 libs-y += drivers/usb/eth/
 libs-y += drivers/usb/gadget/
+libs-y += drivers/usb/gadget/udc/
 libs-y += drivers/usb/host/
 libs-y += drivers/usb/musb/
 libs-y += drivers/usb/musb-new/
