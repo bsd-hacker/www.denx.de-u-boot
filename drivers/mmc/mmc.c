@@ -21,6 +21,8 @@
 #include <div64.h>
 #include "mmc_private.h"
 
+static int mmc_error_print_max = -1;
+
 #ifndef CONFIG_DM_MMC_OPS
 __weak int board_mmc_getwp(struct mmc *mmc)
 {
@@ -1543,7 +1545,7 @@ int mmc_start_init(struct mmc *mmc)
 	/* made sure it's not NULL earlier */
 	err = mmc->cfg->ops->init(mmc);
 	if (err)
-		return err;
+		goto done;
 #endif
 	mmc->ddr_mode = 0;
 	mmc_set_bus_width(mmc, 1);
@@ -1553,7 +1555,7 @@ int mmc_start_init(struct mmc *mmc)
 	err = mmc_go_idle(mmc);
 
 	if (err)
-		return err;
+		goto done;
 
 	/* The internal partition reset to user partition(0) at every CMD0*/
 	mmc_get_blk_desc(mmc)->hwpart = 0;
@@ -1570,14 +1572,32 @@ int mmc_start_init(struct mmc *mmc)
 
 		if (err) {
 #if !defined(CONFIG_SPL_BUILD) || defined(CONFIG_SPL_LIBCOMMON_SUPPORT)
-			printf("Card did not respond to voltage select!\n");
+			if (mmc_error_print_max < 4) {
+				mmc_error_print_max++;
+				printf("Card did not respond to voltage select!\n");
+
+				if (mmc_error_print_max == 4) {
+					printf("Discarding further error messages\n");
+				}
+			}
 #endif
-			return -EOPNOTSUPP;
+//			return -EOPNOTSUPP;
+			goto done;
 		}
 	}
 
 	if (!err)
 		mmc->init_in_progress = 1;
+
+done:
+	if (err) {
+		mmc->has_init = 0;
+		mmc->block_dev.type = DEV_TYPE_UNKNOWN;
+		mmc->block_dev.blksz = 0;
+		mmc->block_dev.lba = 0;
+	} else {
+		mmc->has_init = 1;
+	}
 
 	return err;
 }
